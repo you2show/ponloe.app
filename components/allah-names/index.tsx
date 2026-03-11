@@ -1,0 +1,2 @@
+
+export { AllahNamesView } from './AllahNamesView';

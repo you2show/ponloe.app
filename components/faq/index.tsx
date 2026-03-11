@@ -1,0 +1,2 @@
+
+export { FAQView } from './FAQView';

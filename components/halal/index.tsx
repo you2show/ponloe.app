@@ -1,0 +1,2 @@
+
+export { HalalFinderView } from './HalalFinderView';

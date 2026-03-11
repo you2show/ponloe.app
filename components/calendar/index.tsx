@@ -1,0 +1,2 @@
+
+export { MuslimCalendarView } from './MuslimCalendarView';

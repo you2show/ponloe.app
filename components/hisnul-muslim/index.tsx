@@ -1,0 +1,2 @@
+
+export { HisnulMuslimView } from './HisnulMuslimView';
