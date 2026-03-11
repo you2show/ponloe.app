@@ -1,0 +1,2 @@
+
+export { QiblaFinderView } from './QiblaFinderView';

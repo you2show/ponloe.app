@@ -1,0 +1,159 @@
+
+export interface Lesson {
+  id: string;
+  number: string;
+  title: string;
+  description: string;
+  content: string; // HTML content
+  duration: string;
+}
+
+export const LESSONS: Lesson[] = [
+  {
+    id: 'lesson-1',
+    number: '០១',
+    title: 'មូលដ្ឋានគ្រឹះ៖ តើឥស្លាមជាអ្វី?',
+    description: 'ស្វែងយល់ពីអត្ថន័យពិតនៃ "ការប្រគល់ខ្លួន" និងគោលដៅនៃជីវិត។',
+    duration: '៥ នាទី',
+    content: `
+      <div class="space-y-6">
+        <p class="lead text-lg font-medium text-gray-700">
+          ពាក្យ "អ៊ីស្លាម" (Islam) មកពីពាក្យអារ៉ាប់ "សាឡាម" (Salam) ដែលមានន័យថា "សន្តិភាព" និង "ការចុះចូល"។
+        </p>
+        
+        <h3 class="text-xl font-bold text-emerald-800 mt-6 mb-3">និយមន័យ</h3>
+        <p>ក្នុងបច្ចេកសព្ទសាសនា អ៊ីស្លាមមានន័យថា ការប្រគល់ខ្លួនដោយស្ម័គ្រចិត្តចំពោះព្រះជាម្ចាស់ (អល់ឡោះ) តែមួយគត់ ដោយការគោរពប្រតិបត្តិតាមបទបញ្ជារបស់ទ្រង់ និងការជៀសវាងពីអ្វីដែលទ្រង់ហាមឃាត់។</p>
+        
+        <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 my-6 rounded-r-lg">
+          <p class="italic text-emerald-900">
+            "អ្នកដែលប្រតិបត្តិតាមសាសនាអ៊ីស្លាម ត្រូវបានគេហៅថា 'មុស្លិម' (Muslim)។"
+          </p>
+        </div>
+
+        <h3 class="text-xl font-bold text-emerald-800 mt-6 mb-3">គោលបំណងនៃជីវិត</h3>
+        <p>គោលបំណងចម្បងនៃជីវិតគឺដើម្បីស្គាល់ និងគោរពសក្ការៈចំពោះអល់ឡោះតែមួយអង្គគត់ (Ibadah) ស្របតាមការណែនាំរបស់ទ្រង់។ នេះមិនមែនមានន័យថា ត្រូវតែនៅក្នុងវិហារពេញមួយថ្ងៃនោះទេ ប៉ុន្តែរាល់សកម្មភាពល្អដែលយើងធ្វើដោយមានចេតនាល្អដើម្បីទទួលបានការពេញចិត្តពីអល់ឡោះ ក៏ចាត់ទុកជាការគោរពសក្ការៈដែរ។</p>
+        
+        <ul class="list-disc pl-5 space-y-2 mt-4">
+           <li>ការធ្វើល្អចំពោះឪពុកម្តាយ</li>
+           <li>ការជួយអ្នកក្រីក្រ</li>
+           <li>ការនិយាយពាក្យសម្តីពិរោះ</li>
+           <li>ការរកស៊ីចិញ្ចឹមជីវិតដោយសុចរិត</li>
+        </ul>
+      </div>
+    `
+  },
+  {
+    id: 'lesson-2',
+    number: '០២',
+    title: 'ជំនឿ៖ ស្គាល់ពីព្រះជាម្ចាស់ (អល់ឡោះ)',
+    description: 'តើអ្នកណាជាអ្នកបង្កើតចក្រវាល? តើគុណលក្ខណៈរបស់ទ្រង់មានអ្វីខ្លះ?',
+    duration: '៧ នាទី',
+    content: `
+      <div class="space-y-6">
+        <p><strong>អល់ឡោះ</strong> គឺជាព្រះនាមរបស់ព្រះជាម្ចាស់តែមួយគត់ក្នុងភាសាអារ៉ាប់។ ទ្រង់គឺជាអ្នកបង្កើត និងជាអ្នកទ្រទ្រង់នូវអ្វីៗទាំងអស់នៅក្នុងចក្រវាល។</p>
+        
+        <h3 class="text-xl font-bold text-emerald-800 mt-6 mb-3">លក្ខណៈពិសេសរបស់អល់ឡោះ</h3>
+        <p>អល់ឡោះមានគុណលក្ខណៈល្អឥតខ្ចោះជាច្រើន ដែលក្នុងនោះមាន ៩៩ ព្រះនាមដែលត្រូវបានគេស្គាល់ច្បាស់ (Asma-ul-Husna)។ ឧទាហរណ៍ខ្លះៗរួមមាន៖</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+           <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+              <span class="font-bold text-emerald-600 block mb-1">Ar-Rahman</span>
+              <span class="text-sm">អ្នកដែលមានចិត្តមេត្តាករុណាបំផុត</span>
+           </div>
+           <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+              <span class="font-bold text-emerald-600 block mb-1">Al-Alim</span>
+              <span class="text-sm">អ្នកដែលដឹងគ្រប់យ៉ាង ទាំងអាថ៌កំបាំងនិងបើកចំហ</span>
+           </div>
+           <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+              <span class="font-bold text-emerald-600 block mb-1">Al-Qadir</span>
+              <span class="text-sm">អ្នកដែលមានសមត្ថភាពនិងអំណាចលើអ្វីៗទាំងអស់</span>
+           </div>
+           <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+              <span class="font-bold text-emerald-600 block mb-1">Al-Khaliq</span>
+              <span class="text-sm">អ្នកបង្កើតអ្វីៗទាំងអស់ពីភាពទទេ</span>
+           </div>
+        </div>
+
+        <p>អល់ឡោះមិនដូចនឹងអ្វីដែលទ្រង់បានបង្កើតនោះទេ។ ទ្រង់គ្មានរូបរាងដូចមនុស្ស គ្មានឪពុកម្តាយ គ្មានកូន និងគ្មានដៃគូ។ ការជឿជាក់លើអល់ឡោះតែមួយគត់ គឺជាមូលដ្ឋានគ្រឹះនៃសាសនាអ៊ីស្លាម ដែលហៅថា <strong>"តាវហ៊ីដ" (Tawhid)</strong>។</p>
+      </div>
+    `
+  },
+  {
+    id: 'lesson-3',
+    number: '០៣',
+    title: 'អ្នកនាំសារ៖ ស្គាល់ពីអ្នកនាំសារមូហាំម៉ាត់ (ﷺ)',
+    description: 'ប្រវត្តិ និងតួនាទីរបស់អ្នកនាំសារចុងក្រោយ។',
+    duration: '១០ នាទី',
+    content: `
+      <div class="space-y-6">
+        <p>មូហាំម៉ាត់ (ﷺ) គឺជាព្យាការី និងជាអ្នកនាំសារចុងក្រោយបង្អស់របស់អល់ឡោះ។ លោកត្រូវបានបញ្ជូនមកដើម្បីនាំសារនៃការណែនាំ និងសេចក្តីមេត្តាករុណាដល់មនុស្សជាតិទាំងអស់។</p>
+        
+        <h3 class="text-xl font-bold text-emerald-800 mt-6 mb-3">ប្រវត្តិសង្ខេប</h3>
+        <p>លោកកើតនៅទីក្រុងម៉ាក្កះ (ប្រទេសអារ៉ាប៊ីសាអូឌីតបច្ចុប្បន្ន) នៅប្រហែលឆ្នាំ ៥៧០ នៃគ្រិស្តសករាជ។ លោកត្រូវបានគេស្គាល់ថាជាមនុស្សដែលមានភាពស្មោះត្រង់បំផុតតាំងពីក្មេង រហូតទទួលបានរហស្សនាមថា "អាល់-អាមីន" (អ្នកដែលគួរឱ្យទុកចិត្ត)។</p>
+        
+        <h3 class="text-xl font-bold text-emerald-800 mt-6 mb-3">ការទទួលបានសារ (វ៉ាហ៊ី)</h3>
+        <p>នៅអាយុ ៤០ ឆ្នាំ ពេលដែលលោកកំពុងតាំងសមាធិនៅក្នុងរូងភ្នំមួយឈ្មោះថា ហ៊ីរ៉ លោកទទួលបានការបើកបង្ហាញដំបូងពីអល់ឡោះតាមរយៈទេវតាជីព្រីល។ សារទាំងនេះត្រូវបានប្រមូលផ្តុំជាគម្ពីរ <strong>គូរអាន</strong>។</p>
+        
+        <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 my-6 rounded-r-lg">
+          <p class="italic text-emerald-900">
+            "យើងមិនបានបញ្ជូនអ្នក (មូហាំម៉ាត់) មកទេ លើកលែងតែដើម្បីជាក្តីមេត្តាករុណាដល់ពិភពលោកទាំងមូល។" (គម្ពីរគូរអាន ២១:១០៧)
+          </p>
+        </div>
+      </div>
+    `
+  },
+  {
+    id: 'lesson-4',
+    number: '០៤',
+    title: 'ការប្រតិបត្តិ៖ សសរស្តម្ភទាំង ៥ របស់ឥស្លាម',
+    description: 'មូលដ្ឋានគ្រឹះដ៏សំខាន់ក្នុងជីវិតរបស់មុស្លិមគ្រប់រូប។',
+    duration: '៨ នាទី',
+    content: `
+      <div class="space-y-6">
+        <p>សាសនាអ៊ីស្លាមត្រូវបានកសាងឡើងលើសសរស្តម្ភចំនួន ៥ ដែលជាកាតព្វកិច្ចចម្បងសម្រាប់មុស្លិមគ្រប់រូប៖</p>
+        
+        <div class="space-y-4 mt-4">
+            <div class="flex gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">1</div>
+                <div>
+                    <h4 class="font-bold text-gray-900">ស្សាហាទ៉ះ (ការប្រកាសជំនឿ)</h4>
+                    <p class="text-sm text-gray-600">ការប្រកាសថា "គ្មានព្រះជាម្ចាស់ណាផ្សេងក្រៅពីអល់ឡោះ ហើយមូហាំម៉ាត់ជាអ្នកនាំសាររបស់អល់ឡោះ"។</p>
+                </div>
+            </div>
+            
+            <div class="flex gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">2</div>
+                <div>
+                    <h4 class="font-bold text-gray-900">សឡាត (ការថ្វាយបង្គំ)</h4>
+                    <p class="text-sm text-gray-600">ការថ្វាយបង្គំ ៥ ដងក្នុងមួយថ្ងៃ (ព្រឹកព្រលឹម, ថ្ងៃត្រង់, រសៀល, ព្រលប់, និងយប់)។</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">3</div>
+                <div>
+                    <h4 class="font-bold text-gray-900">ហ្សាកាត់ (ការបរិច្ចាគទាន)</h4>
+                    <p class="text-sm text-gray-600">ការបរិច្ចាគចំណែកជាក់លាក់នៃទ្រព្យសម្បត្តិ (២.៥%) ទៅដល់ជនក្រីក្រ និងអ្នកខ្វះខាត។</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">4</div>
+                <div>
+                    <h4 class="font-bold text-gray-900">សោម (ការបួស)</h4>
+                    <p class="text-sm text-gray-600">ការតមអាហារ និងទឹក ពីព្រះអាទិត្យរះដល់ព្រះអាទិត្យលិច ក្នុងខែរ៉ម៉ាឌន។</p>
+                </div>
+            </div>
+
+            <div class="flex gap-4">
+                <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold shrink-0">5</div>
+                <div>
+                    <h4 class="font-bold text-gray-900">ហាច់ (ធម្មយាត្រា)</h4>
+                    <p class="text-sm text-gray-600">ការធ្វើដំណើរទៅកាន់ទីក្រុងម៉ាក្កះ ម្តងក្នុងមួយជីវិតសម្រាប់អ្នកដែលមានលទ្ធភាព។</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    `
+  }
+];

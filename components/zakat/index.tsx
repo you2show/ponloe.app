@@ -1,0 +1,2 @@
+
+export { ZakatView } from './ZakatView';

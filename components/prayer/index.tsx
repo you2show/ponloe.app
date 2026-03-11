@@ -1,0 +1,2 @@
+
+export { PrayerTimesView } from './PrayerTimesView';

@@ -1,0 +1,2 @@
+
+export { PostersView } from './PostersView';
