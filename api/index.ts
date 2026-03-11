@@ -43,7 +43,6 @@ async function proxyRequest(req: VercelRequest, res: VercelResponse, targetUrl: 
     res.status(response.status);
 
     if (response.body) {
-      // Vercel node runtime supports web streams
       const reader = response.body.getReader();
       while (true) {
         const { done, value } = await reader.read();
@@ -72,7 +71,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  // Get path from query or URL
   const url = req.url || '';
   const parsedUrl = new URL(url, `http://${req.headers.host}`);
   const pathname = parsedUrl.pathname;
@@ -81,8 +79,54 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   // Health check
   if (pathname === '/api/health' || pathname === '/api') {
-    return res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '2.0.0' });
+    return res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '2.1.0' });
   }
+
+  // --- Telegram Media Proxy Endpoints ---
+  
+  // Image Proxy
+  if (pathname.startsWith('/api/image/')) {
+    const fileId = pathname.replace('/api/image/', '');
+    try {
+      const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
+      const fileData: any = await fileResponse.json();
+      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
+      const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
+      return proxyRequest(req, res, target);
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  // Audio Proxy
+  if (pathname.startsWith('/api/audio/')) {
+    const fileId = pathname.replace('/api/audio/', '');
+    try {
+      const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
+      const fileData: any = await fileResponse.json();
+      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
+      const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
+      return proxyRequest(req, res, target);
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  // Video Proxy
+  if (pathname.startsWith('/api/video/')) {
+    const fileId = pathname.replace('/api/video/', '');
+    try {
+      const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
+      const fileData: any = await fileResponse.json();
+      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
+      const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
+      return proxyRequest(req, res, target);
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  // --- External API Proxies ---
 
   // Prayer Times API
   if (pathname.startsWith('/api/pt/cal')) {
@@ -106,14 +150,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
-  // Quran APIs - QuranEnc
+  // Quran APIs
   if (pathname.startsWith('/api/quranenc/')) {
     const subPath = pathname.replace('/api/quranenc/', '');
     const target = `https://quranenc.com/api/v1/translation/sura/${subPath}`;
     return proxyRequest(req, res, target);
   }
 
-  // Quran APIs - Alquran.cloud
   if (pathname.startsWith('/api/alquran/')) {
     const subPath = pathname.replace('/api/alquran/', '');
     const queryStr = parsedUrl.search;
@@ -121,7 +164,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return proxyRequest(req, res, target);
   }
 
-  // Quran APIs - Quran.com
   if (pathname.startsWith('/api/quran/')) {
     const subPath = pathname.replace('/api/quran/', '');
     const queryStr = parsedUrl.search;
@@ -129,7 +171,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return proxyRequest(req, res, target);
   }
 
-  // Quran APIs - QuranCDN
   if (pathname.startsWith('/api/qurancdn/')) {
     const subPath = pathname.replace('/api/qurancdn/', '');
     const queryStr = parsedUrl.search;
@@ -137,16 +178,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return proxyRequest(req, res, target);
   }
 
-  // Audio proxy
+  // Audio proxy for direct URLs
   if (pathname.startsWith('/api/proxy-audio')) {
     const target = req.query.url as string;
     if (!target) return res.status(400).json({ error: 'Missing URL' });
-    
     const headers: any = {};
     if (req.headers.range) headers.Range = req.headers.range;
     return proxyRequest(req, res, target, { headers });
   }
 
-  // Root or Not Found
   return res.status(404).json({ error: 'Not Found', path: pathname });
 }
