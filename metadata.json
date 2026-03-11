@@ -1,0 +1,8 @@
+{
+  "name": "Ponloe.org plovka v4.4.3",
+  "description": "A responsive task and note management app that works seamlessly on mobile, tablet, and desktop, featuring Gemini AI integration.",
+  "requestFramePermissions": [
+    "microphone",
+    "geolocation"
+  ]
+}

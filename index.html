@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Ponloe.org</title>
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Ponloe" />
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3655/3655580.png" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Primary Font: Google Sans (covers English & Khmer) -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    
+    <!-- Arabic Font: Scheherazade New -->
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    
+    <!-- Arabic Font: Amiri Quran (Google Fonts - Reliable fallback) -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet" crossorigin="anonymous">
+
+    <!-- Arabic Fonts from previous.quran.com -->
+    <link rel="stylesheet" href="https://previous.quran.com/assets/font-faces-53ee9c16655c9a71103a9f52de58999781007b9ff2448972179ebb6d2db0bacb.css" crossorigin="anonymous">
+    
+    <!-- Hugeicons -->
+    <link rel="stylesheet" href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css" crossorigin="anonymous" />
+
+    <style>
+      @font-face {
+        font-family: 'KFGQPC Uthman Taha Naskh';
+        src: url('https://cdn.qurancdn.com/assets/fonts/kfgqpc-uthmani-script-hafs-regular-43d92837.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'me_quran_volt_newmet';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/me_quran_volt_newmet.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'digitalkhaat-v2';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/dk/DigitalKhattV2.otf') format('opentype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'surah-name-v4-icon';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/surah-names/v4/surah-name-v4.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'p574-v4-tajweed';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/quran_fonts/v4-tajweed/ttf/p1.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'p1-v2';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/quran_fonts/v2/ttf.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'quran-common';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/common/quran-common.ttf') format('truetype');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'surah-header';
+        src: url('https://static-cdn.tarteel.ai/qul/fonts/surah-names/surah-header/QCF_SurahHeader_COLOR-Regular.ttf') format('truetype');
+        font-display: swap;
+      }
+    </style>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- PapaParse for CSV -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    
+    <style>
+      body {
+        font-family: 'Google Sans', 'Inter', sans-serif;
+        -webkit-tap-highlight-color: transparent;
+      }
+      /* Ensure Khmer text uses Google Sans */
+      .font-khmer { font-family: 'Google Sans', sans-serif; }
+      .font-khmer-title { font-family: 'Google Sans', sans-serif; }
+      
+      /* Updated Arabic Font Classes based on new source */
+      
+      /* New Fonts */
+      .font-me-quran-volt {
+        font-family: 'me_quran_volt_newmet', serif;
+        line-height: 2.2;
+      }
+
+      .font-v4-tajweed {
+        font-family: 'p574-v4-tajweed', 'Amiri', serif;
+        line-height: 2.2;
+      }
+
+      .font-digitalkhaat {
+        font-family: 'digitalkhaat-v2', serif;
+      }
+
+      .font-surah-name {
+        font-family: 'surah-name-v4-icon', serif;
+      }
+
+      .font-surah-header {
+        font-family: 'surah-header', serif;
+      }
+
+      /* KFGQPC Uthman Taha Naskh - Official Quran Font */
+      .font-kfgqpc {
+        font-family: 'KFGQPC Uthman Taha Naskh', serif;
+        line-height: 2.2;
+      }
+
+      /* Uthmanic Hafs (Version 17) - Excellent for reading */
+      .font-uthman-hafs-v17 { 
+        font-family: 'UthmanicHafs1-Ver17', serif; 
+      }
+
+      /* Amiri Quran (Google Fonts) - Very Reliable */
+      .font-amiri-quran {
+        font-family: 'Amiri Quran', serif;
+        line-height: 2.2;
+      }
+
+      /* Scheherazade New */
+      .font-scheherazade {
+        font-family: 'Scheherazade New', serif !important;
+        line-height: 2.2;
+      }
+
+      /* Me Quran (Standard Uthmani) */
+      .font-me-quran {
+        font-family: 'me_quran', serif;
+      }
+
+      /* IndoPak (PDMS Saleem) */
+      .font-pdms {
+        font-family: 'pdms', serif;
+      }
+
+      /* Bismillah specific font */
+      .font-bismillah {
+        font-family: 'bismillah', serif;
+      }
+      
+      /* Hide scrollbar for cleaner mobile look */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-gray-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
+    <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+</html>
