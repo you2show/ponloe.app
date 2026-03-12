@@ -72,25 +72,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const url = req.url || '';
-  const parsedUrl = new URL(url, `http://${req.headers.host}`);
+  const parsedUrl = new URL(url, `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
+  const search = parsedUrl.search;
   
   console.log(`[API] Request Path: ${pathname}`);
 
   // Health check
   if (pathname === '/api/health' || pathname === '/api') {
-    return res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '2.1.0' });
+    return res.json({ status: 'ok', timestamp: new Date().toISOString(), version: '2.2.0' });
   }
 
   // --- Telegram Media Proxy Endpoints ---
-  
-  // Image Proxy
-  if (pathname.startsWith('/api/image/')) {
-    const fileId = pathname.replace('/api/image/', '');
+  if (pathname.startsWith('/api/image/') || pathname.startsWith('/api/audio/') || pathname.startsWith('/api/video/')) {
+    const fileId = pathname.split('/').pop();
+    if (!fileId) return res.status(400).json({ error: 'Missing fileId' });
+    
     try {
       const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
       const fileData: any = await fileResponse.json();
-      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
+      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram', details: fileData });
       const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
       return proxyRequest(req, res, target);
     } catch (err: any) {
@@ -98,53 +99,32 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  // Audio Proxy
-  if (pathname.startsWith('/api/audio/')) {
-    const fileId = pathname.replace('/api/audio/', '');
-    try {
-      const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
-      const fileData: any = await fileResponse.json();
-      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
-      const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
-      return proxyRequest(req, res, target);
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
-
-  // Video Proxy
-  if (pathname.startsWith('/api/video/')) {
-    const fileId = pathname.replace('/api/video/', '');
-    try {
-      const fileResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`);
-      const fileData: any = await fileResponse.json();
-      if (!fileData.ok) return res.status(404).json({ error: 'File not found on Telegram' });
-      const target = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
-      return proxyRequest(req, res, target);
-    } catch (err: any) {
-      return res.status(500).json({ error: err.message });
-    }
+  // --- Telegram Send Message ---
+  if (pathname === '/api/telegram/send' && req.method === 'POST') {
+    const { chatId, text } = req.body;
+    const target = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    return proxyRequest(req, res, target, {
+      method: 'POST',
+      body: { chat_id: chatId || TELEGRAM_CHANNEL_ID, text, parse_mode: 'HTML' }
+    });
   }
 
   // --- External API Proxies ---
 
   // Prayer Times API
   if (pathname.startsWith('/api/pt/cal')) {
-    const { year, month, latitude, longitude, method, school, adjustment } = req.query;
-    const target = `https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${latitude}&longitude=${longitude}&method=${method}&school=${school}&adjustment=${adjustment}`;
+    const target = `https://api.aladhan.com/v1/calendar/${req.query.year}/${req.query.month}${search}`;
     return proxyRequest(req, res, target);
   }
 
   if (pathname.startsWith('/api/pt/gToH')) {
-    const { month, year, method } = req.query;
-    const target = `https://api.aladhan.com/v1/gToHCalendar/${month}/${year}?method=${method}`;
+    const target = `https://api.aladhan.com/v1/gToHCalendar/${req.query.month}/${req.query.year}${search}`;
     return proxyRequest(req, res, target);
   }
 
   // Nominatim API
   if (pathname.startsWith('/api/nominatim/reverse')) {
-    const { lat, lon, zoom, 'accept-language': lang } = req.query;
-    const target = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=${zoom}&accept-language=${lang}`;
+    const target = `https://nominatim.openstreetmap.org/reverse${search}`;
     return proxyRequest(req, res, target, {
       headers: { 'User-Agent': 'PonloeApp/1.0 (ponloevideos@gmail.com)' }
     });
@@ -159,22 +139,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (pathname.startsWith('/api/alquran/')) {
     const subPath = pathname.replace('/api/alquran/', '');
-    const queryStr = parsedUrl.search;
-    const target = `https://api.alquran.cloud/v1/${subPath}${queryStr}`;
+    const target = `https://api.alquran.cloud/v1/${subPath}${search}`;
     return proxyRequest(req, res, target);
   }
 
   if (pathname.startsWith('/api/quran/')) {
     const subPath = pathname.replace('/api/quran/', '');
-    const queryStr = parsedUrl.search;
-    const target = `https://api.quran.com/api/v4/${subPath}${queryStr}`;
+    const target = `https://api.quran.com/api/v4/${subPath}${search}`;
     return proxyRequest(req, res, target);
   }
 
   if (pathname.startsWith('/api/qurancdn/')) {
     const subPath = pathname.replace('/api/qurancdn/', '');
-    const queryStr = parsedUrl.search;
-    const target = `https://api.qurancdn.com/api/qdc/${subPath}${queryStr}`;
+    const target = `https://api.qurancdn.com/api/qdc/${subPath}${search}`;
     return proxyRequest(req, res, target);
   }
 
